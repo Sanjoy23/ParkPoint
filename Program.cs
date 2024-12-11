@@ -7,6 +7,8 @@ var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddControllers();
 builder.Services.AddDbContext<ParkPointContext>(options => 
 options.UseSqlite("Data Source=dbParkPoint"));
+builder.Services.AddScoped<IParkingService, ParkingService>();
+builder.Services.AddScoped<IParkingSlotRepository, ParkingSlotRepository>();
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();

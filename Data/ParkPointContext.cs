@@ -5,6 +5,6 @@ public class ParkPointContext : DbContext
     public ParkPointContext(DbContextOptions options) : base(options)
     {
     }
-    DbSet<ParkingSlot> ParkingSlots{get; set;} = null!;
-    DbSet<Vehicle> Vehicles {get; set;} = null!;
+    public DbSet<ParkingSlot> ParkingSlots{get; set;} = null!;
+    public DbSet<Vehicle> Vehicles {get; set;} = null!;
 }
