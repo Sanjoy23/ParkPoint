@@ -1,5 +1,8 @@
 
+using Microsoft.AspNetCore.Http.HttpResults;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Razor.TagHelpers;
+using SQLitePCL;
 
 public class ParkingService : IParkingService
 {
@@ -32,5 +35,11 @@ public class ParkingService : IParkingService
         else{
             return new SlotDto();
         }
+    }
+
+    public async Task<bool> UpdateParkingSlot(int Id, UpdateParkingSlotDto updateDto)
+    {
+        bool result = await _repo.UpdateParkingSlotById(Id, updateDto);
+        return result;
     }
 }
