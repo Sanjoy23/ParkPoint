@@ -40,4 +40,26 @@ public class ParkingSlotRepository : IParkingSlotRepository
     {
         return await _context.ParkingSlots.ToListAsync();
     }
+
+    public async Task<bool> UpdateParkingSlotById(int Id, UpdateParkingSlotDto updateDto)
+    {
+        var result = await _context.ParkingSlots.FindAsync(Id);
+        if(result == null) return false;
+
+        if(!string.IsNullOrWhiteSpace(updateDto.SlotNumber))
+        {
+            result.SlotNumber = updateDto.SlotNumber;
+        }
+        if(!string.IsNullOrWhiteSpace(updateDto.Type))
+        {
+            result.Type = updateDto.Type;
+        }
+
+        if(!string.IsNullOrWhiteSpace(updateDto.Status))
+        {
+            result.Status = updateDto.Status;
+        }
+        await _context.SaveChangesAsync();
+        return true;
+    }
 }

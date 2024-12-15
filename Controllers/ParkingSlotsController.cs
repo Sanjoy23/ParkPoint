@@ -36,4 +36,17 @@ public class ParkingSoltsController : ControllerBase
             return StatusCode(500, "Internal server error: " + ex.Message);
         }
     }
+    [HttpPut("update-slot")]
+    public async Task<IActionResult> UpdateParkingSlot(int Id, [FromBody] UpdateParkingSlotDto updateSlotDto)
+    {
+        //if(updateSlotDto == null) return BadRequest("Invalid data");
+        bool result = await _service.UpdateParkingSlot(Id, updateSlotDto);
+        if(result)
+        {
+            return Ok("Parking slot updated successfully.");
+        }
+        else {
+            return NotFound("Parking slot not found.");
+        }
+    }
 }
