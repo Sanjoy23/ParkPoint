@@ -1,5 +1,4 @@
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.VisualBasic;
 
 namespace ParkPoint.Controllers;
 
@@ -18,5 +17,23 @@ public class ParkingSoltsController : ControllerBase
     {
         var result = await _service.GetSlots();
         return Ok(result);
+    }
+
+    [HttpPost("add-slot")]
+    public async Task<IActionResult> AddParkingSlot(string slotNumber, string type)
+    {
+        try
+        {
+            var result = await _service.AddParkingSlot(slotNumber, type);
+            if (result != null)
+            {
+                return Ok(result);
+            }
+            else return Conflict("Slot already exists");
+        }
+        catch (Exception ex)
+        {
+            return StatusCode(500, "Internal server error: " + ex.Message);
+        }
     }
 }

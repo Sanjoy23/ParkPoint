@@ -1,4 +1,4 @@
-public class Slot
+public class SlotDto
 {
     public int Id { get; set; }
     public string? SlotNumebr { get; set; } = string.Empty;
