@@ -12,7 +12,7 @@ public class ParkingSoltsController : ControllerBase
         _service = service;
     }
 
-    [HttpGet("Slots")]
+    [HttpGet("slots")]
     public async Task<IActionResult> getAllSlots()
     {
         var result = await _service.GetSlots();
