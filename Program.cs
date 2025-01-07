@@ -33,8 +33,9 @@ builder.Services.AddAuthentication(options =>{
     };
 });
 
-builder.Services.AddIdentity<ApplicationUser, IdentityRole>()
-                .AddIdentityFrameworkStores<>
+builder.Services.AddIdentity<IdentityUser, IdentityRole>()
+        .AddEntityFrameworkStores<ParkPointContext>()
+        .AddDefaultTokenProviders();
 
 var app = builder.Build();
 
@@ -46,7 +47,7 @@ if (app.Environment.IsDevelopment())
 }
 
 app.UseHttpsRedirection();
-
+app.UseAuthentication();
 app.UseAuthorization();
 
 app.MapControllers();

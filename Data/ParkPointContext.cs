@@ -1,6 +1,7 @@
+using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 
-public class ParkPointContext : DbContext
+public class ParkPointContext : IdentityDbContext
 {
     public ParkPointContext(DbContextOptions options) : base(options)
     {
