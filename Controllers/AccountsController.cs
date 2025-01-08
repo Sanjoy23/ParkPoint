@@ -9,22 +9,29 @@ public class AccountsController : ControllerBase
 {
     private readonly UserManager<IdentityUser> _userManager;
     private readonly RoleManager<IdentityRole> _roleManager;
+    private readonly JwtTokenService _jwtTokenService;
 
-    public AccountsController(UserManager<IdentityUser> userManager, RoleManager<IdentityRole> roleManager)
+    public AccountsController(UserManager<IdentityUser> userManager, RoleManager<IdentityRole> roleManager
+                              , JwtTokenService jwtTokenService)
     {
         _userManager = userManager;
         _roleManager = roleManager;
+        _jwtTokenService = jwtTokenService;
     }
 
     [HttpPost("login")]
     public async Task<IActionResult> Login([FromBody] LoginDto model)
     {
-        if (ModelState.IsValid)
+        var user = await _userManager.FindByEmailAsync(model.UserName);
+        if (user == null || !await _userManager.CheckPasswordAsync(user, model.Password))
         {
-
+            return Unauthorized(new { Message = "Invalid email or password." });
         }
-        return Ok();
+        var roles = await _userManager.GetRolesAsync(user);
+        var token = _jwtTokenService.GenerateToken(user, roles);
+        return Ok(new {Token = token});
     }
+
     [HttpPost("register")]
     public async Task<IActionResult> Register([FromBody] RegisterDto model)
     {
@@ -55,7 +62,7 @@ public class AccountsController : ControllerBase
         {
             await _roleManager.CreateAsync(new IdentityRole(model.Roles));
         }
-        
+
         await _userManager.AddToRoleAsync(user, model.Roles);
         return Ok(new { Message = "User Registered successfullly" });
     }

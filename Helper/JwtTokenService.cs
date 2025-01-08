@@ -16,6 +16,7 @@ public class JwtTokenService
     public string GenerateToken(IdentityUser user, IList<string> roles)
     {
         var jwtSettings = _configuration.GetSection("JwtSettings");
+        var keyString = jwtSettings["Key"];
         var claims = new List<Claim>{
             new Claim(JwtRegisteredClaimNames.Sub, user.Id),
             new Claim(JwtRegisteredClaimNames.Email, user.Email ?? string.Empty),
@@ -23,7 +24,7 @@ public class JwtTokenService
         };
         claims.AddRange(roles.Select(role => new Claim(ClaimTypes.Role, role)));
 
-        var keys = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(jwtSettings["Key"] ?? string.Empty));
+        var keys = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(keyString ?? "__Jwt.key__"));
         var creds = new SigningCredentials(keys, SecurityAlgorithms.HmacSha256);
 
         var token = new JwtSecurityToken(
