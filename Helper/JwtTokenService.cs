@@ -23,7 +23,7 @@ public class JwtTokenService
         };
         claims.AddRange(roles.Select(role => new Claim(ClaimTypes.Role, role)));
 
-        var keys = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(jwtSettings["Key"]));
+        var keys = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(jwtSettings["Key"] ?? string.Empty));
         var creds = new SigningCredentials(keys, SecurityAlgorithms.HmacSha256);
 
         var token = new JwtSecurityToken(
