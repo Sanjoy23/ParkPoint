@@ -2,6 +2,7 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Infrastructure;
 using Microsoft.VisualBasic;
+using Serilog;
 
 [Route("web-api/[controller]")]
 [ApiController]
@@ -22,14 +23,23 @@ public class AccountsController : ControllerBase
     [HttpPost("login")]
     public async Task<IActionResult> Login([FromBody] LoginDto model)
     {
-        var user = await _userManager.FindByEmailAsync(model.UserName);
-        if (user == null || !await _userManager.CheckPasswordAsync(user, model.Password))
+        var user = new IdentityUser();
+        try
         {
-            return Unauthorized(new { Message = "Invalid email or password." });
+            user = await _userManager.FindByEmailAsync(model.UserName);
+            if (user == null || !await _userManager.CheckPasswordAsync(user, model.Password))
+            {
+                return Unauthorized(new { Message = "Invalid email or password." });
+            }
+
+        }
+        catch (Exception e)
+        {
+            Log.Error(e, e.Message);
         }
         var roles = await _userManager.GetRolesAsync(user);
         var token = _jwtTokenService.GenerateToken(user, roles);
-        return Ok(new {Token = token});
+        return Ok(new { Token = token });
     }
 
     [HttpPost("register")]
