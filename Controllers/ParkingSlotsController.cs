@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Caching.Distributed;
 using Microsoft.Extensions.Caching.Memory;
 using Newtonsoft.Json;
+using Serilog;
 
 namespace ParkPoint.Controllers;
 
@@ -27,6 +28,8 @@ public class ParkingSoltsController : ControllerBase
     public async Task<IActionResult> getAllSlots()
     {
         var result = await _service.GetSlots();
+		var jsonResult = JsonConvert.SerializeObject(result, Formatting.Indented);
+		Log.Information(jsonResult);
         return Ok(result);
         //return await DistributedCache(); -- for distributed caching using redis
     }
@@ -45,6 +48,7 @@ public class ParkingSoltsController : ControllerBase
         }
         catch (Exception ex)
         {
+            Log.Error(ex, type);
             return StatusCode(500, "Internal server error: " + ex.Message);
         }
     }
