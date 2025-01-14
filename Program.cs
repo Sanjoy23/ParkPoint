@@ -45,6 +45,12 @@ builder.Services.AddAuthentication(options =>{
 builder.Services.AddIdentity<IdentityUser, IdentityRole>()
         .AddEntityFrameworkStores<ParkPointContext>()
         .AddDefaultTokenProviders();
+//builder.Services.AddMemoryCache();
+builder.Services.AddDistributedRedisCache(options =>
+{
+    options.Configuration = "localhost:6379";
+    options.InstanceName = "";
+});
 
 var app = builder.Build();
 
