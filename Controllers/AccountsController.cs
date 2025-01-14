@@ -37,8 +37,8 @@ public class AccountsController : ControllerBase
         {
             Log.Error(e, e.Message);
         }
-        var roles = await _userManager.GetRolesAsync(user);
-        var token = _jwtTokenService.GenerateToken(user, roles);
+        var roles = await _userManager.GetRolesAsync(user!);
+        var token = _jwtTokenService.GenerateToken(user!, roles);
         return Ok(new { Token = token });
     }
 
