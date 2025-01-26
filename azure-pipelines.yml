@@ -34,10 +34,10 @@ steps:
     configuration: '$(buildConfiguration)'
 - task: CopyFiles@2
   inputs:
-    Contents: '**/*.war'
+    Contents: '**/*.zip'
     TargetFolder: '$(build.artifactstagingdirectory)'
 - task: PublishBuildArtifacts@1
   inputs:
     PathtoPublish: '$(Build.ArtifactStagingDirectory)'
-    ArtifactName: 'warfile'
+    ArtifactName: 'webapp'
     publishLocation: 'Container'
