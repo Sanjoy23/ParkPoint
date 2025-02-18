@@ -50,6 +50,7 @@ Log.Logger = new LoggerConfiguration()
         };
     });
 
+    //adding identity to service
     builder.Services.AddIdentity<IdentityUser, IdentityRole>()
             .AddEntityFrameworkStores<ParkPointContext>()
             .AddDefaultTokenProviders();
