@@ -27,6 +27,7 @@ jobs:
       run: dotnet build ./ParkPoint.sln --configuration Release --no-restore
     - name: Publish
       run: dotnet publish ./ParkPoint.sln --configuration Release --no-build --output '${{AZURE_WEBAPP_PACKAGE_PATH}}'
+      
     - name: Deployment
       uses: actions/webapps-deploy@v2
       with:
