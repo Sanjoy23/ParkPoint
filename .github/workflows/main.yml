@@ -26,11 +26,11 @@ jobs:
     - name: Build
       run: dotnet build ./ParkPoint.sln --configuration Release --no-restore
     - name: Publish
-      run: dotnet publish ./ParkPoint.sln --configuration Release --no-build --output '${{AZURE_WEBAPP_PACKAGE_PATH}}'
+      run: dotnet publish ./ParkPoint.sln --configuration Release --no-build --output '${{env.AZURE_WEBAPP_PACKAGE_PATH}}'
       
     - name: Deployment
       uses: actions/webapps-deploy@v2
       with:
         app-name: ${{env.AZURE_WEBAPP_NAME}}
         publish-profiles: ${{secrets.AZURE_PUBLISH_PROFILE}}
-        package: ${{AZURE_WEBAPP_PACKAGE_PATH}}
+        package: ${{env.AZURE_WEBAPP_PACKAGE_PATH}}
